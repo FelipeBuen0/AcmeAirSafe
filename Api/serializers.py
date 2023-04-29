@@ -3,24 +3,29 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 from rest_framework import permissions
 from .models import *
-
-class ManagerPermission(permissions.BasePermission):
-    def has_permission(self, request, view):
-        if Employee.objects.filter(user=request.user).role == 'manager':
-            return True
-        else:
-            return False
-
 class EmployeeSerializer(serializers.ModelSerializer):
+    def create(self, data):
+        employee = Employee(name=data['name'],
+                            role=data['role'],
+                            sector=data['sector'],
+                            access_level=data['access_level'],
+                            username=data['username'])
+        employee.set_password(data['password'])
+        employee.save()
+        return employee
     class Meta:
         model = Employee
+        write_only_fields = ['password']
         read_only_fields = ('user_ptr',)
-        fields = '__all__'
-        permission_classes = [IsAuthenticated]
-        authentication_classes = [TokenAuthentication]
+        fields = ['name',
+                  'role',
+                  'sector',
+                  'access_level',
+                  'password',
+                  'user_ptr',
+                  'username']
 
 class BagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Bag
         fields = '__all__'
-        permission_classes = [permissions.AllowAny]

@@ -49,10 +49,10 @@ INSTALLED_APPS = [
 REST_FRAMEWORK = {
     'PAGE_SIZE': 100,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         # 'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-    ),
+    ],
     'DEFAULT_PERMISSION_CLASSES': [
         # 'rest_framework.permissions.AllowAny'
         # 'rest_framework.permissions.IsAuthenticated'
